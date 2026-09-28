@@ -15,20 +15,20 @@ cp .env.example .env.local   # optional, the default is already https://dummyjso
 npm run dev                  # http://localhost:3000
 ```
 
-| Command             | What it does                  |
-| ------------------- | ----------------------------- |
-| `npm run dev`       | Start the dev server          |
-| `npm run build`     | Production build              |
-| `npm start`         | Serve the production build    |
-| `npm run lint`      | ESLint (flat config)          |
-| `npm run typecheck` | `tsc --noEmit`                |
-| `npm run format`    | Prettier                      |
+| Command             | What it does               |
+| ------------------- | -------------------------- |
+| `npm run dev`       | Start the dev server       |
+| `npm run build`     | Production build           |
+| `npm start`         | Serve the production build |
+| `npm run lint`      | ESLint (flat config)       |
+| `npm run typecheck` | `tsc --noEmit`             |
+| `npm run format`    | Prettier                   |
 
 Environment variables:
 
-| Name                 | Default                 | Notes                                                    |
-| -------------------- | ----------------------- | -------------------------------------------------------- |
-| `DUMMYJSON_BASE_URL` | `https://dummyjson.com` | Server-only. Public API, no credentials are needed.      |
+| Name                 | Default                 | Notes                                               |
+| -------------------- | ----------------------- | --------------------------------------------------- |
+| `DUMMYJSON_BASE_URL` | `https://dummyjson.com` | Server-only. Public API, no credentials are needed. |
 
 ## Stack
 
@@ -61,16 +61,16 @@ Other dependencies and why they are here:
 
 ### Server versus client
 
-| Piece                                                    | Runs on             | Why                                                              |
-| -------------------------------------------------------- | ------------------- | ---------------------------------------------------------------- |
-| All `page.tsx` files, product table markup, detail page  | Server              | Data is fetched on the server; no client fetch waterfall.        |
-| `DashboardShell` (sidebar drawer)                        | Client              | Open/close state only.                                           |
-| Search box, category/sort selects, filter drawer         | Client (leaf)       | They write to the URL.                                           |
-| Pagination and rows-per-page                             | Server `<Link>`s    | Plain links built with `buildListHref`; no JS needed.            |
-| `EditedPrice`, `EditedStockBadge`                        | Client (tiny)       | Merge the edit overlay over server values.                       |
-| `OverviewMetrics`, inventory chart                       | Client              | Fed a slim server-fetched array; recompute with the overlay.     |
-| `ProductPricingCard` + `EditProductModal` + form         | Client              | `useOptimistic`, `useTransition`, calls the Server Action.       |
-| `updateProductAction`                                    | Server Action       | Validates and calls the API on the server.                       |
+| Piece                                                   | Runs on          | Why                                                          |
+| ------------------------------------------------------- | ---------------- | ------------------------------------------------------------ |
+| All `page.tsx` files, product table markup, detail page | Server           | Data is fetched on the server; no client fetch waterfall.    |
+| `DashboardShell` (sidebar drawer)                       | Client           | Open/close state only.                                       |
+| Search box, category/sort selects, filter drawer        | Client (leaf)    | They write to the URL.                                       |
+| Pagination and rows-per-page                            | Server `<Link>`s | Plain links built with `buildListHref`; no JS needed.        |
+| `EditedPrice`, `EditedStockBadge`                       | Client (tiny)    | Merge the edit overlay over server values.                   |
+| `OverviewMetrics`, inventory chart                      | Client           | Fed a slim server-fetched array; recompute with the overlay. |
+| `ProductPricingCard` + `EditProductModal` + form        | Client           | `useOptimistic`, `useTransition`, calls the Server Action.   |
+| `updateProductAction`                                   | Server Action    | Validates and calls the API on the server.                   |
 
 ### Data layer
 
@@ -81,13 +81,13 @@ Other dependencies and why they are here:
 
 Caching (`fetch` with `next.revalidate`, mutations `no-store`):
 
-| Data                     | Revalidate |
-| ------------------------ | ---------- |
-| Categories               | 24 h       |
-| Metrics (all products)   | 5 min      |
-| Product list and search  | 60 s       |
-| Single product           | 60 s       |
-| `PATCH` update           | not cached |
+| Data                    | Revalidate |
+| ----------------------- | ---------- |
+| Categories              | 24 h       |
+| Metrics (all products)  | 5 min      |
+| Product list and search | 60 s       |
+| Single product          | 60 s       |
+| `PATCH` update          | not cached |
 
 `/products` and `/products/[id]` render dynamically because they read `searchParams`, but the underlying `fetch` calls still hit the data cache. `/` is statically generated and revalidated every 60 seconds.
 
@@ -95,14 +95,14 @@ Caching (`fetch` with `next.revalidate`, mutations `no-store`):
 
 The query string is the only source of truth for list state. Nothing about search, filter, sort or page lives in `useState`.
 
-| Param      | Rules                                                                                  |
-| ---------- | -------------------------------------------------------------------------------------- |
-| `query`    | Trimmed, omitted when empty. Sent to DummyJSON as `q`.                                 |
-| `category` | Must be a slug returned by `/products/categories`, otherwise ignored.                  |
-| `sort`     | Allowlist: `title`, `price`, `rating`, `stock`.                                        |
-| `order`    | `asc` or `desc`, only kept when `sort` is set.                                         |
-| `page`     | Integer ≥ 1. A page past the end is clamped to the last page.                          |
-| `perPage`  | 25, 50 or 100. Default 25, omitted when default.                                       |
+| Param      | Rules                                                                 |
+| ---------- | --------------------------------------------------------------------- |
+| `query`    | Trimmed, omitted when empty. Sent to DummyJSON as `q`.                |
+| `category` | Must be a slug returned by `/products/categories`, otherwise ignored. |
+| `sort`     | Allowlist: `title`, `price`, `rating`, `stock`.                       |
+| `order`    | `asc` or `desc`, only kept when `sort` is set.                        |
+| `page`     | Integer ≥ 1. A page past the end is clamped to the last page.         |
+| `perPage`  | 25, 50 or 100. Default 25, omitted when default.                      |
 
 - `parseListParams` (in `lib/list-params.ts`) never throws. A malformed URL falls back to defaults.
 - `buildListHref` builds every list URL. Any change other than `page` resets the page to 1, and default values are left out of the URL.
@@ -114,11 +114,11 @@ The query string is the only source of truth for list state. Nothing about searc
 
 DummyJSON has no request for "search within a category". `getProducts` picks one of four requests:
 
-| `query` | `category` | Request                                                                              |
-| ------- | ---------- | ------------------------------------------------------------------------------------ |
-| no      | no         | `/products?limit&skip&sortBy&order`                                                  |
-| yes     | no         | `/products/search?q&limit&skip&sortBy&order`                                         |
-| no      | yes        | `/products/category/{slug}?limit&skip&sortBy&order`                                  |
+| `query` | `category` | Request                                                                               |
+| ------- | ---------- | ------------------------------------------------------------------------------------- |
+| no      | no         | `/products?limit&skip&sortBy&order`                                                   |
+| yes     | no         | `/products/search?q&limit&skip&sortBy&order`                                          |
+| no      | yes        | `/products/category/{slug}?limit&skip&sortBy&order`                                   |
 | yes     | yes        | `/products/search?q&limit=0&sortBy&order`, then filter by category and page in memory |
 
 All four return the same `{ products, total, page, perPage, pageCount }` shape, so the UI doesn't know which branch ran.
@@ -140,7 +140,7 @@ Validation: price must be > 0 with at most two decimals; stock must be a whole n
 - `not-found.tsx` for unknown or non-numeric product ids, with a link back to the list.
 - An empty state that says no products match, with a link that clears search and filters.
 - Offline: `useOnlineStatus` (`useSyncExternalStore` over `online`/`offline` events) shows a persistent toast and a header chip, disables the search, filters and edit button, and shows an offline message in the error boundary.
-- Offline detection in practice. When you turn off your data — Wi-Fi or mobile — the dashboard detects it immediately and stops you from interacting with the parts of the UI that would trigger a network request. The search input and the table filters (category, sort, rows per page) are disabled, as is the "Edit price & stock" button, so you can't start an action that is guaranteed to fail. An infinite toast notification appears and stays on screen for as long as you remain offline, telling you that you're offline. The header also shows an offline chip. When your connection returns, the toast clears on its own, the chip disappears and every control becomes interactive again — no refresh needed.
+- Offline detection in practice. When you turn off your data - Wi-Fi or mobile - the dashboard detects it immediately and stops you from interacting with the parts of the UI that would trigger a network request. The search input and the table filters (category, sort, rows per page) are disabled, as is the "Edit price & stock" button, so you can't start an action that is guaranteed to fail. An infinite toast notification appears and stays on screen for as long as you remain offline, telling you that you're offline. The header also shows an offline chip. When your connection returns, the toast clears on its own, the chip disappears and every control becomes interactive again - no refresh needed.
 
 To try it without actually turning off your data:
 
@@ -208,7 +208,7 @@ I used **Claude (Anthropic)** in the following ways
 
 1. Setting up the base components according to current, up-to-date web standards - for example, my base components (buttons, inputs, select, modal, toasts, table, chart primitives, icons, fonts and theme), which are branched off shadcn ui components, giving me more control over the accessibility of the components across pages, whilst also meeting quality UI specifications
 
-2. Structuring this README file to improve the text corrections and give a well written and neat documentation for you to read. 
+2. Structuring this README file to improve the text corrections and give a well written and neat documentation for you to read.
 
 Cheersss ^_~
 
