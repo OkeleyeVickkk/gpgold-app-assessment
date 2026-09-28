@@ -2,7 +2,7 @@
 
 A small internal product management dashboard built on the [DummyJSON Products API](https://dummyjson.com/docs/products). It shows catalogue metrics, a searchable and filterable product list, a product detail page, and a simulated price and stock update with optimistic UI.
 
-- Live URL: **[LIVE_LINK](https://pgold-app-assessment.vercel.app/)**
+- Live URL: **[LIVE_LINK](https://gpgold-app-assessment.vercel.app/)**
 - Repository: https://github.com/OkeleyeVickkk/pgold-app-assessment
 
 ## Setup
