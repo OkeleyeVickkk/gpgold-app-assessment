@@ -1,0 +1,9 @@
+24da544b4ff1b2a2be4fbd0a71cbca271dd3b11a feat(ui): one-row products toolbar and account menu in header
+e695e019f2ad18e4cf0e8080cb79470a6cb2b11e feat(ui): vendor dashboard look, entity table, charts, edit modal and toasts
+1d6b2d08070c9de364028a653c09c6d07013fc0a feat(detail): product detail page with optimistic price and stock editing
+38fb6b1d1d4ae0e907a0dbc1a46886f626defea3 feat(dashboard): sidebar layout, overview metrics and edit overlay
+b5c26bf56699e197625f37cebbf4e60917045c2c feat(list): search, category filter, sort, rows per page and offline mode
+777a176dc48c493ab1cc81ad6f127334de94e937 refactor: adopt frillo conventions for api, routes, constants and components
+2004505f522efba7548eaff2576b0c4a1bf1b1ee feat(list): url-driven listing and pagination
+a849346fe099c5f10b8257a68b8776abfdb093b8 feat(api): typed DummyJSON client
+568d6e879962823f43679d9c5a56dab490bfdd8c chore: scaffold app with shadcn and base components
